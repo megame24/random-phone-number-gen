@@ -25,7 +25,8 @@ UsersController.registerUser = async (req, res, next) => {
   try {
     const user = await Users.create({ name, email, password });
     const tokenPayload = {
-      userId: user.id,
+      id: user.id,
+      role: user.role
     };
     const token = tokenService.generateToken(tokenPayload);
     delete user.password;
@@ -60,7 +61,8 @@ UsersController.loginUser = async (req, res, next) => {
     }
     delete user.password;
     const tokenPayload = {
-      userId: user.id,
+      id: user.id,
+      role: user.role
     };
     const token = tokenService.generateToken(tokenPayload);
     res.status(201).json({

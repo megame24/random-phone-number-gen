@@ -32,6 +32,7 @@ UsersModel.prototype.create = (user) => {
   return new Promise((resolve, reject) => {
     try {
       user.id = uuidv4();
+      user.role = 'user';
       UsersModel.openFile((buf, fd) => {
         let users = {};
         if (buf.toString()) {
