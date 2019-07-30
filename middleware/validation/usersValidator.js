@@ -34,7 +34,7 @@ UsersValidator.prototype.validateUserReg = async (req, res, next) => {
         400);
     }
     if (!email) throwError('The email field is required', 400);
-    if (!emailRegEx.test(email)) throwError('The email is invalid', 400);
+    if (!emailRegEx.test(email)) throwError('Invalid email', 400);
     const user = await Users.findByEmail(email);
     if (user) throwError('This email already exists', 400);
     req.body = { ...req.body, name, email, password };
