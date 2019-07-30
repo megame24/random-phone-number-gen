@@ -8,7 +8,6 @@ const tokenService = {
    * @returns {String} token
    */
   generateToken(payload) {
-    console.log(process.env.AUTH_SECRET);
     return jwt.sign(payload, process.env.AUTH_SECRET, {
       expiresIn: process.env.TOKEN_EXPIRES_IN
     });
