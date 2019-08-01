@@ -37,14 +37,14 @@ PhoneNumModel.prototype.create = (number, ownerId) => {
   }); 
 }
 
-PhoneNumModel.prototype.findAll = (phoneNumIds = []) => {
+PhoneNumModel.prototype.findAll = (phoneNumIds = [], sort = 'asc') => {
   return new Promise((resolve, reject) => {
     try {
       fileUtil.openFile(storePath, (buf, fd) => {
         let phoneNumbers = [];
         if (buf.toString()) {
           const data = JSON.parse(buf.toString());
-          if (!phoneNumIds.length) {
+          if (phoneNumIds[0] === '*') {
             phoneNumbers = Object.values(data);
           } else {
             phoneNumIds.forEach((id) => {
@@ -52,6 +52,10 @@ PhoneNumModel.prototype.findAll = (phoneNumIds = []) => {
             });
           }
         }
+        phoneNumbers = phoneNumbers.sort((a, b) => {
+          if (sort.toLowerCase() === 'asc') return a - b;
+          if (sort.toLowerCase() === 'desc') return b - a;
+        });
         resolve(phoneNumbers);
         fs.closeSync(fd);
       })

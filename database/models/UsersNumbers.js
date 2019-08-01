@@ -4,22 +4,22 @@ const storePath = config[process.env.NODE_ENV].usersNumbers;
 const fileUtil = require('../../utils/fileUtil');
 
 /**
- * UsersNumsModel constructor
+ * UsersNumbersModel constructor
  * @returns {undefined}
  */
-function UsersNumsModel() {}
+function UsersNumbersModel() {}
 
-UsersNumsModel.prototype.create = (numId, userId) => {
+UsersNumbersModel.prototype.create = (numId, userId) => {
   return new Promise((resolve, reject) => {
     try {
       fileUtil.openFile(storePath, (buf, fd) => {
-        let usersNums = {};
+        let usersNumbers = {};
         if (buf.toString()) {
-          usersNums = JSON.parse(buf.toString());
+          usersNumbers = JSON.parse(buf.toString());
         }
-        if (usersNums[userId]) usersNums[userId].push(numId);
-        else usersNums[userId] = [numId];
-        fs.writeSync(fd, JSON.stringify(usersNums));
+        if (usersNumbers[userId]) usersNumbers[userId].push(numId);
+        else usersNumbers[userId] = [numId];
+        fs.writeSync(fd, JSON.stringify(usersNumbers));
         resolve({ numId, userId });
         fs.closeSync(fd);
       });
@@ -29,4 +29,22 @@ UsersNumsModel.prototype.create = (numId, userId) => {
   });
 }
 
-module.exports = new UsersNumsModel();
+UsersNumbersModel.prototype.getPhoneNumIds = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      fileUtil.openFile(storePath, (buf, fd) => {
+        let numIds = [];
+        if (buf.toString()) {
+          const data = JSON.parse(buf.toString());
+          numIds = data[userId];
+        }
+        resolve(numIds);
+        fs.closeSync(fd);
+      });
+    } catch(err) {
+      reject(err)
+    }
+  });
+}
+
+module.exports = new UsersNumbersModel();

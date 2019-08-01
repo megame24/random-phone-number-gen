@@ -3,7 +3,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const PhoneNumController = require('../controllers/PhoneNumController');
 
 const { authenticateUser } = authMiddleware;
-const { generatePhoneNum} = PhoneNumController;
+const { generatePhoneNum, getPhoneNumbers } = PhoneNumController;
 
 const router = Router();
 
@@ -13,9 +13,11 @@ router.post(
   generatePhoneNum
 );
 
-// router.get(
-//   '/phoneNumbers',
-// );
+router.get(
+  '/phoneNumbers',
+  authenticateUser,
+  getPhoneNumbers
+);
 
 // router.get(
 //   '/phoneNumbers/details'
