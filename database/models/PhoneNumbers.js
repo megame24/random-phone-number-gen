@@ -53,8 +53,8 @@ PhoneNumModel.prototype.findAll = (phoneNumIds = [], sort = 'asc') => {
           }
         }
         phoneNumbers = phoneNumbers.sort((a, b) => {
-          if (sort.toLowerCase() === 'asc') return a - b;
           if (sort.toLowerCase() === 'desc') return b - a;
+          else return a -b;
         });
         resolve(phoneNumbers);
         fs.closeSync(fd);
