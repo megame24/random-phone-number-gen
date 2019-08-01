@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
+const { createAdmin } = require('./helpers/usersHelper');
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(routes);
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to Mega-shirts API' });
 });
+
+createAdmin();
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
