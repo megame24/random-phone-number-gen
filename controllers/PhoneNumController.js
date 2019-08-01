@@ -72,10 +72,22 @@ PhoneNumController.getPhoneNumbers = async (req, res, next) => {
  */
 PhoneNumController.getPhoneNumbersDetails = async (req, res, next) => {
   try {
+    const { user: { role } } = req;
+    if (role !== 'admin') throwError('Permission denied', 403);
+    const phoneNumIds = ['*'];
     // get the list of number according to filter and sorting
+    const phoneNumbers = await PhoneNumbers.findAll(phoneNumIds);
     // get total from length
+    const phoneNumbersLength = phoneNumbers.length;
     // get min and max
+    const minNumber = phoneNumbers[0];
+    const maxNumber = phoneNumbers[phoneNumbersLength - 1];
     // return details
+    res.status(200).json({
+      phoneNumbersLength,
+      minNumber,
+      maxNumber
+    });
   } catch (err) {
     next(err);
   }
