@@ -1,5 +1,6 @@
 const { throwError } = require('../helpers/errorHelper');
-const { PhoneNumbers } = require('../database/models');
+const { PhoneNumbers, UsersNumbers } = require('../database/models');
+const { generateRandomNum } = require('../helpers/numberHelper');
 
 /**
  * PhoneNumController constructor
@@ -16,15 +17,16 @@ function PhoneNumController() { }
  * @returns {Object} response object
  */
 PhoneNumController.generatePhoneNum = async (req, res, next) => {
-  const { user: { id } } = req;
   try {
+    const { user: { id } } = req;
     // get the list of number
     const phoneNumbers = await PhoneNumbers.findAll();
     if (phoneNumbers.length > 10000) throwError('Maximum number of phone numbers exceeded');
     // generate random number and ensure it is unique by comparing to list
-    let generatedNum = `0${Math.floor(Math.random() * 1000000000)}`;
+    let generatedNum = `0${generateRandomNum(9)}`;
+    // fixx
     while (phoneNumbers.includes(generatedNum)) {
-      generatedNum = `0${Math.floor(Math.random() * 1000000000)}`;
+      generatedNum = `0${generateRandomNum(9)}`;
     }
     // save number and link to owner, ensure limit of 10000/4mb isn't exceeded
     await PhoneNumbers.create(generatedNum, id);
@@ -45,10 +47,16 @@ PhoneNumController.generatePhoneNum = async (req, res, next) => {
  * middleware chain
  * @returns {Object} response object
  */
-PhoneNumController.getPhoneNums = async (req, res, next) => {
+PhoneNumController.getPhoneNumbers = async (req, res, next) => {
   try {
+    const { user: { id, role } } = req;
+    const { sort } = req.query;
+    let phoneNumIds = await UsersNumbers.getPhoneNumIds(id);
+    if (role === 'admin') phoneNumIds = ['*'];
     // get the list of number according to filter and sorting
+    const phoneNumbers = await PhoneNumbers.findAll(phoneNumIds, sort);
     // return list of numbers
+    res.status(200).json(phoneNumbers);
   } catch (err) {
     next(err);
   }
@@ -62,7 +70,7 @@ PhoneNumController.getPhoneNums = async (req, res, next) => {
  * middleware chain
  * @returns {Object} response object
  */
-PhoneNumController.getPhoneNumsDetails = async (req, res, next) => {
+PhoneNumController.getPhoneNumbersDetails = async (req, res, next) => {
   try {
     // get the list of number according to filter and sorting
     // get total from length
