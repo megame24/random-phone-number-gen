@@ -26,7 +26,7 @@ AuthMiddleware.prototype.authenticateUser = async (req, res, next) => {
     if (!decoded) throwError('Token not present or invalid', 401);
     const user = await Users.findById(decoded.id);
     // return error if user is not found
-    if (!user) throwError('Token not present or invalid', 401);
+    if (!user) throwError('User not found', 404);
     req.user = user;
     return next();
   } catch (err) {

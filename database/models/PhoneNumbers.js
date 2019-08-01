@@ -30,7 +30,7 @@ PhoneNumModel.prototype.create = (number, ownerId) => {
         // create a relationship between number and owner
         await UsersNumbers.create(numId, ownerId);
         fs.closeSync(fd);
-      })
+      });
     } catch(err) {
       reject(err)
     }
@@ -58,7 +58,7 @@ PhoneNumModel.prototype.findAll = (phoneNumIds = [], sort = 'asc') => {
         });
         resolve(phoneNumbers);
         fs.closeSync(fd);
-      })
+      });
     } catch(err) {
       reject(err)
     }
