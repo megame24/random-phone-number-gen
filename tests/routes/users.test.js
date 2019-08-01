@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../../index');
 
-let token;
 describe('Users routes', () => {
   describe('Testing user registration', () => {
     it('Should return 400 if name is not provided', (done) => {

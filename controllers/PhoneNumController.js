@@ -1,6 +1,7 @@
 const { throwError } = require('../helpers/errorHelper');
 const { PhoneNumbers, UsersNumbers } = require('../database/models');
 const { generateRandomNum } = require('../helpers/numberHelper');
+const { maxPhoneNumLength } = require('../configs/config')[process.env.NODE_ENV];
 
 /**
  * PhoneNumController constructor
@@ -19,9 +20,11 @@ function PhoneNumController() { }
 PhoneNumController.generatePhoneNum = async (req, res, next) => {
   try {
     const { user: { id } } = req;
-    // get the list of number
-    const phoneNumbers = await PhoneNumbers.findAll();
-    if (phoneNumbers.length > 10000) throwError('Maximum number of phone numbers exceeded');
+    // get the list of numbers
+    const phoneNumbers = await PhoneNumbers.findAll(['*']);
+    if (phoneNumbers.length > maxPhoneNumLength) {
+      throwError('Maximum number of phone numbers exceeded', 400);
+    }
     // generate random number and ensure it is unique by comparing to list
     let generatedNum = `0${generateRandomNum(9)}`;
     // fixx
