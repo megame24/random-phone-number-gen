@@ -49,11 +49,11 @@ UsersModel.prototype.findById = (id) => {
   });
 }
 
-UsersModel.prototype.create = (user) => {
+UsersModel.prototype.create = (user, role = 'user') => {
   return new Promise((resolve, reject) => {
     try {
       user.id = uuidv4();
-      user.role = 'user';
+      user.role = role;
       fileUtil.openFile(storePath, async (buf, fd) => {
         let users = {};
         if (buf.toString()) {
