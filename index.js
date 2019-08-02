@@ -1,5 +1,4 @@
 const express = require('express');
-const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const { createAdmin } = require('./helpers/usersHelper');
@@ -13,6 +12,7 @@ const port = process.env.PORT || 3005;
 require('dotenv').config();
 
 if (!isProduction) {
+  const morgan = require('morgan');
   app.use(morgan('dev'));
 }
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(routes);
 
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to Mega-shirts API' });
+  res.status(200).json({ message: 'Welcome to random-phone-num-gen API' });
 });
 
 createAdmin();
