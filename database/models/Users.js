@@ -12,6 +12,11 @@ const UsersIdToEmail = require('./UsersIdToEmail');
  */
 function UsersModel() {}
 
+/**
+ * Find user by email
+ * @param {String} email email
+ * @returns {Object} user object
+ */
 UsersModel.prototype.findByEmail = (email) => {
   return new Promise((resolve, reject) => {
     try {
@@ -24,12 +29,17 @@ UsersModel.prototype.findByEmail = (email) => {
         resolve(user);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
   });
-}
+};
 
+/**
+ * Find user by id
+ * @param {String} id user id
+ * @returns {Object} user object
+ */
 UsersModel.prototype.findById = (id) => {
   return new Promise((resolve, reject) => {
     try {
@@ -43,12 +53,18 @@ UsersModel.prototype.findById = (id) => {
         resolve(user);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
   });
-}
+};
 
+/**
+ * Create user
+ * @param {Object} user user object
+ * @param {String} role user role(user/admin)
+ * @returns {Object} user object
+ */
 UsersModel.prototype.create = (user, role = 'user') => {
   return new Promise((resolve, reject) => {
     try {
@@ -65,11 +81,11 @@ UsersModel.prototype.create = (user, role = 'user') => {
         resolve(user);
         await UsersIdToEmail.create(user.id, user.email);
         fs.closeSync(fd);
-      })
-    } catch(err) {
-      reject(err)
+      });
+    } catch (err) {
+      reject(err);
     }
-  }); 
-}
+  });
+};
 
 module.exports = new UsersModel();

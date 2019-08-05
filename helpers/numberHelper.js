@@ -1,3 +1,8 @@
+/**
+ * Generate random number
+ * @param {Number} length length of number to be generated
+ * @returns {Number} generated number
+ */
 const generateRandomNum = (length) => {
   const lengthFactor = 1 * Math.pow(10, length);
   let generatedNum = '' + Math.floor(Math.random() * lengthFactor);

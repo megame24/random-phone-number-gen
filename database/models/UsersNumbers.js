@@ -9,6 +9,12 @@ const fileUtil = require('../../utils/fileUtil');
  */
 function UsersNumbersModel() {}
 
+/**
+ * Create userId to numId relationship
+ * @param {String} numId number id
+ * @param {String} userId user id
+ * @returns {Object} object of numId and userId
+ */
 UsersNumbersModel.prototype.create = (numId, userId) => {
   return new Promise((resolve, reject) => {
     try {
@@ -23,12 +29,17 @@ UsersNumbersModel.prototype.create = (numId, userId) => {
         resolve({ numId, userId });
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
   });
-}
+};
 
+/**
+ * Get phone number ids
+ * @param {String} userId user id
+ * @returns {Array} array of number ids
+ */
 UsersNumbersModel.prototype.getPhoneNumIds = (userId) => {
   return new Promise((resolve, reject) => {
     try {
@@ -41,10 +52,10 @@ UsersNumbersModel.prototype.getPhoneNumIds = (userId) => {
         resolve(numIds);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
   });
-}
+};
 
 module.exports = new UsersNumbersModel();

@@ -12,10 +12,16 @@ const UsersNumbers = require('./UsersNumbers');
  */
 function PhoneNumModel() {}
 
+/**
+ * Create phone number
+ * @param {Number} number phone number
+ * @param {String} ownerId owner id
+ * @returns {Number} the created phone number
+ */
 PhoneNumModel.prototype.create = (number, ownerId) => {
   return new Promise((resolve, reject) => {
     try {
-      numId = uuidv4();
+      const numId = uuidv4();
       fileUtil.openFile(storePath, async (buf, fd, fileSize) => {
         // limit file size to 4mb
         if (fileSize > 4000000) throwError('Maximum file size exceeded');
@@ -31,12 +37,18 @@ PhoneNumModel.prototype.create = (number, ownerId) => {
         await UsersNumbers.create(numId, ownerId);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
-  }); 
-}
+  });
+};
 
+/**
+ * Find all phone numbers
+ * @param {Array} phoneNumIds an array of phone number ids
+ * @param {String} sort (ASC/DESC)
+ * @returns {Array} an array of phone numbers
+ */
 PhoneNumModel.prototype.findAll = (phoneNumIds = [], sort = 'asc') => {
   return new Promise((resolve, reject) => {
     try {
@@ -54,15 +66,15 @@ PhoneNumModel.prototype.findAll = (phoneNumIds = [], sort = 'asc') => {
         }
         phoneNumbers = phoneNumbers.sort((a, b) => {
           if (sort.toLowerCase() === 'desc') return b - a;
-          else return a -b;
+          return a - b;
         });
         resolve(phoneNumbers);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
-  }); 
-}
+  });
+};
 
 module.exports = new PhoneNumModel();

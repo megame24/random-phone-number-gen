@@ -9,6 +9,11 @@ const fileUtil = require('../../utils/fileUtil');
  */
 function UsersIdToEmailModel() {}
 
+/**
+ * Get user email by id
+ * @param {String} userId user id
+ * @returns {String} email
+ */
 UsersIdToEmailModel.prototype.getEmail = (userId) => {
   return new Promise((resolve, reject) => {
     try {
@@ -21,12 +26,18 @@ UsersIdToEmailModel.prototype.getEmail = (userId) => {
         resolve(email);
         fs.closeSync(fd);
       });
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
   });
-}
+};
 
+/**
+ * Create user email to id relationship
+ * @param {String} userId user id
+ * @param {String} email email
+ * @returns {Object} object of userId and email
+ */
 UsersIdToEmailModel.prototype.create = (userId, email) => {
   return new Promise((resolve, reject) => {
     try {
@@ -39,11 +50,11 @@ UsersIdToEmailModel.prototype.create = (userId, email) => {
         fs.writeSync(fd, JSON.stringify(usersIdToEmail));
         resolve({ userId, email });
         fs.closeSync(fd);
-      })
-    } catch(err) {
-      reject(err)
+      });
+    } catch (err) {
+      reject(err);
     }
-  }); 
-}
+  });
+};
 
 module.exports = new UsersIdToEmailModel();
