@@ -28,6 +28,18 @@ Follow the steps below to test the application.
 
 Postman documentation link: https://www.getpostman.com/collections/8dc396cba2115ed574cc
 
+  
+## Api EndPoints
+
+EndPoint                      |   Functionality
+------------------------------|------------------------
+POST /users        |   User sign up.
+POST /users/login             |   User login.
+POST /phoneNumbers         |   Generate phone number
+GET /phoneNumbers       |   Get phone numbers of logged in user, for admin, get all(sorting enabled: ASC/DESC)
+POST /phoneNumbers/details          |   Get phone numbers' details(only available to admin)
+
+
 ## Licence
 
 MIT
